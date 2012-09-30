@@ -36,29 +36,26 @@ session_start();
                 <section id="portfolio" class="clear">
 
                     <?php
-                    require "db_inc.php";
-                    verbindung_mysql("bshop");
+//                    require "db_inc.php";
+//                    verbindung_mysql("bshop");
+                    $db = new PDO("mysql:host=localhost;dbname=BShop", "root", "");
                     $sql = "SELECT  * FROM item";
-                    $query = mysql_query($sql);
-
-                    if (!$query) {
-                        echo "<p>Failure...SQL Script</p>";
-                    }
+                    $result = $db->query($sql);
 
 
-                    while ($rows = mysql_fetch_array($query)) {
+                    while ($rows = $result->fetchObject()) {
                         echo "<article><header>
-                         <h2> " . $rows["item_name"] . "</h2>
+                         <h2> " . $rows->item_name . "</h2>
                         </header>";
-                        echo "<img src='images/demo/" . $rows["item_image"] . "'/>";
+                        echo "<img src='images/demo/" . $rows->item_image . "'/>";
                         echo "<div class=\"meta\">
-                            <div class=\"tags\"><strong>Price:</strong>" . $rows["item_price"] . "Euro</div>
-                        </div>";
+                              <div class=\"tags\"><strong>Price:</strong>" . $rows->item_price . "Euro</div>
+                              </div>";
                         echo "<footer><a href=\"#\" >Buy Me</a></footer>";
                     }
 
 
-                    mysql_close($verbindung);
+                    $db=NULL;
                     ?>
                 </section>
                 <!-- ####################################################################################################### -->

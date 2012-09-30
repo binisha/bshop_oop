@@ -48,7 +48,7 @@ session_start();
                     echo "\n<form><table><thead><tr><th>Select</th><th>item_id</th><th>Image</th><th>Name</th><th>Price</th></tr></thead>";
 
                     while ($rows = mysql_fetch_array($query)) {
-                        echo "<tbody><tr><td><input type='radio' name='auswahl' value='" . $rows["key"] . "'></td>
+                        echo "<tbody><tr><td><input type='radio' name='auswahl' value='" . $rows["item_id"] . "'></td>
                                     <td> " . $rows["item_id"] . "</td>
                                     <td> <img src='images/demo/" . $rows["item_image"] . "'/></td>
                                         <td>" . $rows["item_name"] . "</td>
