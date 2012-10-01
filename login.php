@@ -24,7 +24,7 @@
         <![endif]-->
     </head>
     <body>
-   <?php include 'header.html'; ?>
+        <?php include 'header.html'; ?>
         <!-- content -->
         <div class="wrapper row2">
             <div id="container">
@@ -37,22 +37,40 @@
                         <h2>Login</h2>
                         <?php
                         $login_comment = "";
+                        echo "test";
                         if (isset($_POST["login"])) {
-                            require "functions.php";
+                            echo "test2";
+                            require "src/UserDao.php";
+
+                            $userDao = new UserDao();
+
                             $username = $_POST["username"];
                             $password = $_POST["password"];
-                            $result = authenticate($username, $password);
+                            $result = $userDao->getUser($username);
 
-                            switch ($result) {
-                                case 1: header("Location: http://localhost/BShop/userInfo.php?username=" . $username);
-                                    break;
-                                case 2:$login_comment = "<p> Invalid user <p>";
-                                    break;
+                            if ($username == $result->$username && $password == $result->$password) {
+                                if (!isset($_SESSION)) {
+                                    session_start();
+                                }
+
+                                //we store the user in session so that it can survive multiple http request and
+                                // could be called by other php pages
+                                $_SESSION[$username] = $result->$username; // result points to User obj
+
+                                header("Location: ./userInfo.php?username=" . $username);
+                            } else {
+                                $login_comment = "<p> Invalid user <p>";
                             }
+//                            switch ($result) {
+//                                case 1: header("Location: http://localhost/BShop/userInfo.php?username=" . $username);
+//                                    break;
+//                                case 2:$login_comment = "<p> Invalid user <p>";
+//                                    break;
+//                            }
                         }
                         ?>
 
-                        <form action="<?php // echo $_SERVER['PHP_SELF']     ?>" method="post">
+                        <form action="<?php // echo $_SERVER['PHP_SELF']      ?>" method="post">
                             <p>
                                 <input type="text" name="username" id="username" value="" size="22">
                                 <label for="username"><small>User Name (required)</small></label>

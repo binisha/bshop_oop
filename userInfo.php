@@ -36,11 +36,23 @@
                     <section id="comments">
                         <h2>Welcome <?php echo $_GET["username"] ?></h2>
                         <?php
-                        require "functions.php";
-                        $user_arr = load_user_login_data("user_data.csv");
-                        $username = $_GET["username"];
-                        $userValues = $user_arr[$username];
+  
+                        require "src/UserDao.php";
+                        
+                        if (!isset($_SESSION)) {
+                            session_start();
+                        }
+                        $key = $_GET["username"];
+                        echo $key;
+                        
+                        //retrieves user_name from session that is logged in
+                        $user_name = $_SESSION[$key];
+                        
+                        echo "user name in session store $user_name";
+                        $userDao = new UserDao();
+                        $result = $userDao->getUser($user_name);
 
+ 
                         setlocale(LC_ALL, "de_DE");
                         echo "It's now: &nbsp;" . strftime("%A %d %B %Y %H:%M:%S", time()) . "<br>";
                         echo "<br>";
@@ -56,13 +68,13 @@
                                     </thead>";
                         echo "<tbody>";
                         echo "<tr class=light>
-                                    <td>$userValues[0]</td>
-                                    <td>$userValues[1]</td>
-                                    <td>$userValues[2]</td>
-                                    <td>$userValues[3]</td>
-                                    <td>$userValues[4]</td>
-                                    <td>$userValues[5]</td>
-                                    <td>$userValues[6]</td>
+                                    <td>$result->firstname</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
                                     </tr>";
                         echo "</tbody>";
                         echo "</table>";

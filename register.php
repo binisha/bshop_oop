@@ -36,10 +36,13 @@
 
                         <h2>Register Yourself</h2>
                         <?php
-                        require "functions.php";
+                        require "src/UserDao.php";
+                       
                         $comment = "";
                         if (isset($_POST["register"])) {
-                            $resultregister = register_user($_POST["salutation"], $_POST["firstname"], $_POST["lastname"], $_POST["email"], $_POST["username"], $_POST["password"], $_POST["confirmpassword"]);
+                            
+                            $userDao = new UserDao();
+                            $resultregister = $userDao->add_user($_POST["salutation"], $_POST["firstname"], $_POST["lastname"], $_POST["email"], $_POST["username"], $_POST["password"], $_POST["confirmpassword"]);
                             switch ($resultregister) {
                                 case 1: header("Location: http://localhost/BShop/thanks.php");
                                     break;
